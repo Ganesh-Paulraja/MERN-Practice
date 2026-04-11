@@ -1,17 +1,13 @@
-import app from "./app.js";
 import dotenv from 'dotenv'
+dotenv.config({ path: 'backend/config/config.env' })
 
-dotenv.config({path : 'backend/config/config.env'})
-
-const PORT = process.env.PORT || 7500
-
-// sample get request
-app.get('/test', (req,res) => {
-    // res.send('sample send request')
-    res.json({message: 'json send message'})
-})
+import app from './app.js'
+import connectDataBase from './config/db.js'
 
 
-app.listen(PORT, () => {
-    console.log('server is running on PORT', PORT)
+const PORT = process.env.PORT || 7000
+
+connectDataBase()
+const server = app.listen(PORT, () => {
+    console.log(`Server is running on PORT: ${PORT}`);
 })
