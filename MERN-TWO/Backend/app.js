@@ -1,11 +1,17 @@
-import express from 'express'
-const app = express()
-import productRouts from './routes/productroutes.js'
-import errorHandlingMiddleware from './middleware/error.js'
-
-app.use(express.json())
-app.use('/api/v1', productRouts)
-app.use(errorHandlingMiddleware)
+import express from 'express';
+import productRoutes from './routes/productRoutes.js';
+import errorMiddleware from './middleware/error.js'; // ✅ import
 
 
-export default app
+const app = express();
+
+
+// Middleware – handle incoming JSON
+app.use(express.json());
+app.use('/api/v1', productRoutes);
+
+
+app.use(errorMiddleware); // ✅ always last — after all routes
+
+
+export default app;

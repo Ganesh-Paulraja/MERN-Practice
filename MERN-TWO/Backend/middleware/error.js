@@ -1,12 +1,19 @@
-export default (err, req, res, next) => {
-    err.statusCode = err.statusCode || 500;
-    err.message = err.message || "Internal Server Error"
+import HandleError from "../utils/HandleError.js";
 
+const errorMiddleware = (err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  err.message = err.message || "Internal Server Error";
 
-    res.status(err.statusCode).json({
-        success: false,
-        message: err.message
-    })
-}
+  // Wrong MongoDB ObjectId
+  if (err.name === "CastError") {
+    const message = `This is invalid resource: ${err.path}`;
+    err = new HandleError(message, 404);
+  }
 
+  res.status(err.statusCode).json({
+    success: false,
+    message: err.message,
+  });
+};
 
+export default errorMiddleware;
