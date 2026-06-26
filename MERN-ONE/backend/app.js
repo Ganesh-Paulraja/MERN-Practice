@@ -1,20 +1,27 @@
-import express from 'express';
-import productRoutes from './routes/productRoutes.js';
-import userRoutes from './routes/userRoutes.js'
-import errorMiddleware from './middleware/error.js'; // ✅ import
-impo
+import express from 'express'
+const app = express()
+import productRouts from './routes/productRoutes.js'
+// -----------------
+// import userRoutes from './routes/userRoutes.js'
+import cookieParser from 'cookie-parser';
+import fileUpload from 'express-fileupload';
+// ------------------
 
 
-const app = express();
+import errorMiddleware from './middleware/error.js';
 
 
-// Middleware – handle incoming JSON
-app.use(express.json());
-app.use('/api/v1', productRoutes);
-app.use("/api/v1",userRoutes)
 
 
-app.use(errorMiddleware); // ✅ always last — after all routes
+app.use(express.json())
+app.use(cookieParser())
+app.use(fileUpload())
+app.use(express.urlencoded({ extended: true }));
 
 
-export default app;
+app.use('/api/v1', productRouts)
+// app.use("/api/v1",userRoutes)
+app.use(errorMiddleware);
+
+
+export default app

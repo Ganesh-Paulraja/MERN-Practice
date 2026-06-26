@@ -4,6 +4,7 @@ class APIFunctionality{
         this.queryStr=queryStr
     }
 
+
     search(){
         const keyword=this.queryStr.keyword?{
             name:{
@@ -12,9 +13,10 @@ class APIFunctionality{
             }
         }:{};
         this.query=this.query.find({...keyword});
-        
+       
         return this
     }
+
 
     filter(){
         const queryCopy={...this.queryStr};
@@ -22,8 +24,9 @@ class APIFunctionality{
         removeFields.forEach(key=>delete queryCopy[key]);
         this.query=this.query.find(queryCopy)
         return this
-        
+       
     }
+
 
     pagination(resultPerPage){
         const currentPage=Number(this.queryStr.page) ||1

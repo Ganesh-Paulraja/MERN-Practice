@@ -10,10 +10,18 @@ process.on('uncaughtException', (err) => {
 
 import app from './app.js';
 import connectDB from './config/db.js';
+import { v2 as cloudinary } from "cloudinary";
+
+
+cloudinary.config({
+   cloud_name: process.env.CLOUDINARY_NAME,
+   api_key: process.env.API_KEY,
+   api_secret: process.env.API_SECRET,
+});
+
 
 
 const PORT = process.env.PORT || 7000;
-
 
 connectDB();
 const server = app.listen(PORT, () => {
@@ -28,3 +36,4 @@ process.on('unhandledRejection', (err) => {
         process.exit(1);
     });
 });
+

@@ -6,6 +6,7 @@ import { sendToken } from '../utils/jwtToken.js';
 import { sendEmail } from '../utils/sendEmail.js';
 import {v2 as cloudinary} from 'cloudinary';
 
+
 export const registerUser=handleAsyncError(async(req , res , next)=>{
     const {name,email,password,avatar}=req.body;
     const myCloud= await cloudinary.uploader.upload(avatar,{
@@ -21,10 +22,12 @@ export const registerUser=handleAsyncError(async(req , res , next)=>{
             public_id:myCloud.public_id,
             url:myCloud.secure_url
 
+
         }
     })
     sendToken(user,201,res)
 })
+
 
 // Login
 export const loginUser=handleAsyncError(async(req , res, next)=>{
@@ -43,6 +46,7 @@ export const loginUser=handleAsyncError(async(req , res, next)=>{
     sendToken(user,200,res)
 })
 
+
 // /Logout
 export const logout=handleAsyncError(async(req , res , next)=>{
     res.cookie('token',null,{
@@ -55,7 +59,8 @@ export const logout=handleAsyncError(async(req , res , next)=>{
     })
 })
 
-// Forgot Password 
+
+// Forgot Password
 export const requestPasswordReset=handleAsyncError(async(req,res,next)=>{
     const {email}=req.body
     const user=await User.findOne({email});
@@ -66,7 +71,7 @@ export const requestPasswordReset=handleAsyncError(async(req,res,next)=>{
     try{
         resetToken=user.generatePasswordResetToken()
         await user.save({validateBeforeSave:false})
-        
+       
     }catch(error){
         return next(new HandleError("Could not save reset token, please try again later",500))
     }
@@ -89,8 +94,9 @@ export const requestPasswordReset=handleAsyncError(async(req,res,next)=>{
         await user.save({validateBeforeSave:false})
         return next(new HandleError("Email couldn't be sent , please try again later",500))
     }
-    
+   
 })
+
 
 //Reset Password
 export const resetPassword=handleAsyncError(async(req ,res,next)=>{
@@ -113,6 +119,7 @@ await user.save();
 sendToken(user,200,res)
 })
 
+
 // Get user details
 export const getUserDetails=handleAsyncError(async(req , res , next)=>{
     const user=await User.findById(req.user.id);
@@ -121,8 +128,9 @@ export const getUserDetails=handleAsyncError(async(req , res , next)=>{
         user
     })
  
-    
+   
 })
+
 
 //update password
 export const updatePassword=handleAsyncError(async(req,res,next)=>{
@@ -139,6 +147,7 @@ export const updatePassword=handleAsyncError(async(req,res,next)=>{
     await user.save();
     sendToken(user,200,res);
 })
+
 
 //Updating user profile
 export const updateProfile=handleAsyncError(async(req,res,next)=>{
@@ -157,6 +166,7 @@ export const updateProfile=handleAsyncError(async(req,res,next)=>{
         crop:'scale'
         })
 
+
         updateUserDetails.avatar={
             public_id:myCloud.public_id,
             url:myCloud.secure_url,
@@ -173,6 +183,7 @@ export const updateProfile=handleAsyncError(async(req,res,next)=>{
     })
 })
 
+
 // Admin- Getting user information
 export const getUsersList=handleAsyncError(async(req,res,next)=>{
     const users=await User.find();
@@ -181,6 +192,7 @@ export const getUsersList=handleAsyncError(async(req,res,next)=>{
         users
     })
 })
+
 
 //Admin- Getting single user information
 export const getSingleUser=handleAsyncError(async(req,res,next)=>{
@@ -193,8 +205,10 @@ export const getSingleUser=handleAsyncError(async(req,res,next)=>{
         user
     })
 
-    
+
+   
 })
+
 
 //Admin- Changing user role
 export const updateUserRole=handleAsyncError(async(req,res,next)=>{
@@ -214,8 +228,11 @@ export const updateUserRole=handleAsyncError(async(req,res,next)=>{
         user
     })
 
-    
+
+   
 })
+
+
 
 
 // Admin - Delete User Profile

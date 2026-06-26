@@ -1,5 +1,3 @@
-
-
 import mongoose from "mongoose";
 const productSchema = new mongoose.Schema({
     name: {
@@ -74,5 +72,6 @@ const productSchema = new mongoose.Schema({
         default: Date.now,
     }
 });
+
 
 export default mongoose.model('product', productSchema);
